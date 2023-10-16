@@ -21,8 +21,6 @@
                                             class="dt-button btn btn-primary"
                                             tabindex="0"
                                             aria-controls="DataTables_Table_0"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#basicModal"
                                             ng-click="showModalUser()"
                                             type="button">
                                             <span>
@@ -32,6 +30,11 @@
                                                 </span>
                                             </span>
                                         </button>
+                                        <button
+                                            id="btnShowModal"
+                                            style="display: none;"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#basicModal"></button>
                                     </div>
                                 </div>
                             </div>
@@ -155,10 +158,8 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <a
-                                            href="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo-1/app/invoice/preview"
+                                            href="javascript:void(0);"
                                             class="text-body border-light-primary pr-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#basicModal"
                                             ng-click="showModalUser(item)"
                                             aria-label="Edit Invoice" data-bs-original-title="Edit Invoice">
                                             <i class="bx bx-edit-alt mx-1"></i>

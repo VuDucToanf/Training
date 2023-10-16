@@ -5,6 +5,7 @@ function UserController($scope, $rootScope, $http) {
     $scope.users = [];
     $scope.total = 0;
     $scope.page_current = 1;
+    $scope.user = undefined;
     $scope.params = {
         id: 0,
         full_name: '',
@@ -57,12 +58,21 @@ function UserController($scope, $rootScope, $http) {
         $scope.find();
     }
 
-    $scope.showModalUser = function (user) {
-        if (user !== undefined) {
-            $scope.user = user;
+    $scope.showModalUser = function (data) {
+        if (data !== undefined) {
+            $scope.user = data;
+            $('input#nameBasic').val($scope.user ? $scope.user.full_name : '');
+            $('input#emailBasic').val($scope.user ? $scope.user.email : '');
+            $('input#locationBasic').val($scope.user ? $scope.user.address : '');
+            $('select#genderBasic').val($scope.user ? $scope.user.gender : '');
         } else {
             $scope.user = undefined;
+            $('input#nameBasic').val('');
+            $('input#emailBasic').val('');
+            $('input#locationBasic').val('');
+            $('select#genderBasic').val('');
         }
+        $('#btnShowModal').click();
     }
 
     function postData(url, data) {
