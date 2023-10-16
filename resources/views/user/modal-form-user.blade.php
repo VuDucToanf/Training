@@ -14,14 +14,14 @@
                     <div class="col mb-3">
                         <label for="nameBasic" class="form-label">Full name</label>
                         <input type="text" id="nameBasic" class="form-control" placeholder="Enter Full name"
-                               value="@{{ user.full_name ? user.full_name : '' }}">
+                               ng-model="user.full_name">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col mb-3">
                         <label for="emailBasic" class="form-label">Email</label>
                         <input type="email" id="emailBasic" class="form-control" placeholder="xxxx@xxx.xx"
-                               value="@{{ user.email ? user.email : '' }}">
+                               ng-model="user.email">
                     </div>
                 </div>
                 <div class="row">
@@ -42,7 +42,7 @@
                     <div class="col mb-3">
                         <label for="locationBasic" class="form-label">Location</label>
                         <input type="text" id="locationBasic" class="form-control"
-                               value="@{{ user.address ? user.address : '' }}">
+                               ng-model="user.address">
                     </div>
                 </div>
             </div>

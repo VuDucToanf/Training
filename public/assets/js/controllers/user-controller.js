@@ -5,7 +5,12 @@ function UserController($scope, $rootScope, $http) {
     $scope.users = [];
     $scope.total = 0;
     $scope.page_current = 1;
-    $scope.user = undefined;
+    $scope.user = {
+        full_name: '',
+        email: '',
+        gender: '',
+        address: ''
+    };
     $scope.params = {
         id: 0,
         full_name: '',
@@ -18,9 +23,8 @@ function UserController($scope, $rootScope, $http) {
 
     $scope.find = function () {
         $scope.isLoading = true;
-        var url = 'api/user' + encodeQuery($scope.params);
-        url = $scope.buildUrl(url);
-        $http.get(url).then(function mySuccess(response) {
+        var url = 'api/user';
+        $http.get(url, {params: $scope.params}).then(function mySuccess(response) {
             if (response.data && response.data.status == 'successful') {
                 $scope.users = response.data.result;
                 $scope.total = response.data.total;
@@ -33,14 +37,6 @@ function UserController($scope, $rootScope, $http) {
         })
     }
 
-    $scope.search = function () {
-        $scope.params.email = $('input#search-email').val();
-        $scope.params.full_name = $('input#search-full_name').val();
-        $scope.params.status = $('select#UserStatus').val();
-        $scope.params.gender = $('select#UserGender').val();
-        $scope.find();
-    }
-
     $scope.reset = function () {
         $scope.params = {
             id: 0,
@@ -51,26 +47,19 @@ function UserController($scope, $rootScope, $http) {
             page_id: 1,
             page_size: 10
         };
-        $('input#search-email').val('');
-        $('input#search-full_name').val('');
-        $('select#UserStatus').val('');
-        $('select#UserGender').val('');
         $scope.find();
     }
 
     $scope.showModalUser = function (data) {
         if (data !== undefined) {
             $scope.user = data;
-            $('input#nameBasic').val($scope.user ? $scope.user.full_name : '');
-            $('input#emailBasic').val($scope.user ? $scope.user.email : '');
-            $('input#locationBasic').val($scope.user ? $scope.user.address : '');
-            $('select#genderBasic').val($scope.user ? $scope.user.gender : '');
         } else {
-            $scope.user = undefined;
-            $('input#nameBasic').val('');
-            $('input#emailBasic').val('');
-            $('input#locationBasic').val('');
-            $('select#genderBasic').val('');
+            $scope.user = {
+                full_name: '',
+                email: '',
+                gender: '',
+                address: ''
+            };
         }
         $('#btnShowModal').click();
     }
@@ -85,10 +74,10 @@ function UserController($scope, $rootScope, $http) {
     $scope.editUser = function (id) {
         var url = 'api/user/' + id;
         var data = {
-            'full_name': $('input#nameBasic').val(),
-            'email': $('input#emailBasic').val(),
-            'location': $('input#locationBasic').val(),
-            'gender': $('select#genderBasic').val(),
+            'full_name': $scope.user.full_name,
+            'email': $scope.user.email,
+            'location': $scope.user.address,
+            'gender': $scope.user.gender,
         };
         postData(url, data);
     }
@@ -96,10 +85,10 @@ function UserController($scope, $rootScope, $http) {
     $scope.createUser = function () {
         var url = 'api/user';
         var data = {
-            'full_name': $('input#nameBasic').val(),
-            'email': $('input#emailBasic').val(),
-            'location': $('input#locationBasic').val(),
-            'gender': $('select#genderBasic').val(),
+            'full_name': $scope.user.full_name,
+            'email': $scope.user.email,
+            'location': $scope.user.address,
+            'gender': $scope.user.gender,
         };
         postData(url, data);
     }

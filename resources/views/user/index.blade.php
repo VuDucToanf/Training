@@ -47,7 +47,8 @@
                                             type="search"
                                             class="form-control"
                                             placeholder="Search by email"
-                                            aria-controls="DataTables_Table_0">
+                                            aria-controls="DataTables_Table_0"
+                                            ng-model="params.email">
                                     </label>
                                 </div>
                                 <div id="DataTables_Table_0_filter" class="dataTables_filter">
@@ -57,22 +58,29 @@
                                             type="search"
                                             class="form-control"
                                             placeholder="Search by full name"
-                                            aria-controls="DataTables_Table_0">
+                                            aria-controls="DataTables_Table_0"
+                                            ng-model="params.full_name">
                                     </label>
                                 </div>
                                 <div class="invoice_status mb-3 mb-md-0">
-                                    <select id="UserStatus" class="form-select">
+                                    <select id="UserStatus" class="form-select" ng-model="params.status">
                                         <option value=""> Select Status</option>
-                                        <option value="PENDING" class="text-capitalize">PENDING</option>
-                                        <option value="ACTIVE" class="text-capitalize">ACTIVE</option>
-                                        <option value="SUSPEND" class="text-capitalize">SUSPEND</option>
+                                        <option value="PENDING" class="text-capitalize" ng-selected="params.status == 'PENDING'">
+                                            PENDING
+                                        </option>
+                                        <option value="ACTIVE" class="text-capitalize" ng-selected="params.status == 'ACTIVE'">
+                                            ACTIVE
+                                        </option>
+                                        <option value="SUSPEND" class="text-capitalize" ng-selected="params.status == 'SUSPEND'">
+                                            SUSPEND
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="invoice_gender mb-3 mb-md-0">
-                                    <select id="UserGender" class="form-select">
+                                    <select id="UserGender" class="form-select" ng-model="params.gender">
                                         <option value=""> Select Gender</option>
-                                        <option value="MALE" class="text-capitalize">MALE</option>
-                                        <option value="FEMALE" class="text-capitalize">FEMALE</option>
+                                        <option value="MALE" class="text-capitalize" ng-selected="params.gender == 'MALE">MALE</option>
+                                        <option value="FEMALE" class="text-capitalize" ng-selected="params.gender == 'FEMALE">FEMALE</option>
                                     </select>
                                 </div>
                                 <div
@@ -88,7 +96,7 @@
                                     class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
                                     <a
                                         href="javascript:void(0);"
-                                        ng-click="search()"
+                                        ng-click="find()"
                                         class="btn btn-primary btn-buy-now">
                                         Search
                                     </a>
