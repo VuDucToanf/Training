@@ -23,3 +23,6 @@ Route::get('/get-access-history', [\App\Http\Controllers\GetDataController::clas
 Route::get('/get-data-by-target', [\App\Http\Controllers\GetDataController::class, 'getDataByTarget']);
 
 Route::get('/user', [\App\Http\Controllers\UserController::class, 'index'])->name('user.index');
+Route::prefix('chat')->name('chat')->group(function() {
+    Route::get('/', [\App\Http\Controllers\ChatController::class, 'index'])->name('.index');
+});
