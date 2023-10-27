@@ -6,43 +6,23 @@ console.log("Server started.");
 socketIOServer.on("connection", onClientConnection);
 
 function onClientConnection(connection) {
-    connection.on('add-user', async function (user) {
+    connection.on('disconnect', function() {
+        console.log("Client disconnected.");
+    })
+    connection.on('add-user', function (user) {
         user = JSON.parse(user);
+        console.log(user);
         connection.join(user.group_id);
-        await socketIOServer.to(user.group_id, function (conn) {
-            conn.emit('message', JSON.stringify(user.group_id), JSON.stringify({
-                'created_time': new Date(),
-                'user_id': user.id,
-                'content': user.id + ' joined'
-            }));
-        });
+        // socketIOServer.to(user.group_id, function (conn) {
+        //     conn.emit('message', JSON.stringify(user.group_id), JSON.stringify({
+        //         'created_time': new Date(),
+        //         'user_id': user.id,
+        //         'content': user.id + ' joined'
+        //     }));
+        // });
     })
     connection.on('message', function(group_id, params) {
+        console.log('check', 1);
         connection.emit('message', group_id, params);
     })
 }
-
-// function removeUser(userId, connection) {
-// }
-//
-// function onClientMessage(message) {
-//     var message = JSON.parse(message);
-//     console.log("client message", message);
-// }
-//
-// function sendMessageTo(userId, message) {
-//     var user = getUser(userId);
-//     user.emit("client-msg", message);
-// }
-//
-// function getUser(userId) {
-//     var retval = null;
-//     for (let index = 0; index < users.length; index++) {
-//         const user = users[index];
-//         if (user.userId == userId) {
-//             retval = user;
-//             break;
-//         }
-//     }
-//     return retval;
-// }

@@ -24,6 +24,12 @@ function ChatController($scope) {
             $scope.user.group_id = $scope.defaultValue.group_id;
             $scope.defaultValue.show_join = false;
             connection.emit('add-user', JSON.stringify($scope.user));
+            connection.emit('message', JSON.stringify({
+                'created_time': new Date(),
+                'user_id': $scope.user.id,
+                'group_id': $scope.user.group_id,
+                'content': $scope.user.id + ' joined'
+            }));
         }
     }
 
