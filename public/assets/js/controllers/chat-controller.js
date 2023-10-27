@@ -24,21 +24,18 @@ function ChatController($scope) {
             $scope.user.group_id = $scope.defaultValue.group_id;
             $scope.defaultValue.show_join = false;
             connection.emit('add-user', JSON.stringify($scope.user));
-            connection.emit('message', JSON.stringify($scope.user.group_id), JSON.stringify({
-                'created_time': new Date(),
-                'user_id': $scope.user.id,
-                'content': $scope.user.id + ' joined'
-            }));
         }
     }
 
     // messages
     $scope.messages = {};
     $scope.giveMessage = function (group_id, params) {
-        if (!$scope.messages[JSON.parse(group_id)]) {
-            $scope.messages[JSON.parse(group_id)] = [];
-        }
-        $scope.messages[JSON.parse(group_id)].push(JSON.parse(params));
+        $scope.$apply(function() {
+            if (!$scope.messages[JSON.parse(group_id)]) {
+                $scope.messages[JSON.parse(group_id)] = [];
+            }
+            $scope.messages[JSON.parse(group_id)].push(JSON.parse(params));
+        })
     }
 
     $scope.sendMessage = function () {
