@@ -7,7 +7,4 @@ function User() {
         user = JSON.parse(user);
         users[user.group_id] = user;
     }
-
-    this.removeUser = function (user, connection) {
-    }
 }
