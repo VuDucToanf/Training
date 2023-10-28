@@ -23,31 +23,28 @@ function ChatController($scope) {
             $scope.user.id = $scope.defaultValue.id;
             $scope.user.group_id = $scope.defaultValue.group_id;
             $scope.defaultValue.show_join = false;
-            connection.emit('add-user', JSON.stringify($scope.user));
-            connection.emit('message', JSON.stringify({
-                'created_time': new Date(),
-                'user_id': $scope.user.id,
-                'group_id': $scope.user.group_id,
-                'content': $scope.user.id + ' joined'
-            }));
+            connection.emit('user-join', JSON.stringify($scope.user));
         }
     }
 
     // messages
     $scope.messages = {};
-    $scope.giveMessage = function (group_id, params) {
+    $scope.giveMessage = function (params) {
+        params = JSON.parse(params);
+        console.log('check', params);
         $scope.$apply(function() {
-            if (!$scope.messages[JSON.parse(group_id)]) {
-                $scope.messages[JSON.parse(group_id)] = [];
+            if (!$scope.messages[params.group_id]) {
+                $scope.messages[params.group_id] = [];
             }
-            $scope.messages[JSON.parse(group_id)].push(JSON.parse(params));
+            $scope.messages[params.group_id].push(params);
         })
     }
 
     $scope.sendMessage = function () {
-        connection.emit('message', JSON.stringify($scope.user.group_id), JSON.stringify({
+        connection.emit('client-message', JSON.stringify({
             'created_time': new Date(),
             'user_id': $scope.user.id,
+            'group_id': $scope.user.group_id,
             'content': $scope.defaultValue.content
         }));
         $scope.defaultValue.content = '';
@@ -55,7 +52,7 @@ function ChatController($scope) {
 
     this.init = function () {
     };
-    connection.on('message', $scope.giveMessage);
+    connection.on('server-message', $scope.giveMessage);
 
     this.init();
 }

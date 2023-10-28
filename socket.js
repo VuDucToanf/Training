@@ -1,4 +1,5 @@
 var socketIO = require("socket.io");
+var Group = require("public/assets/js/nodejs/group");
 
 socketIOServer = socketIO.listen(82);
 console.log("Server started.");
@@ -6,23 +7,20 @@ console.log("Server started.");
 socketIOServer.on("connection", onClientConnection);
 
 function onClientConnection(connection) {
-    connection.on('disconnect', function() {
+    connection.on('disconnect', function () {
         console.log("Client disconnected.");
-    })
-    connection.on('add-user', function (user) {
+    });
+    connection.on('user-join', async function (user) {
         user = JSON.parse(user);
-        console.log(user);
-        connection.join(user.group_id);
-        // socketIOServer.to(user.group_id, function (conn) {
-        //     conn.emit('message', JSON.stringify(user.group_id), JSON.stringify({
-        //         'created_time': new Date(),
-        //         'user_id': user.id,
-        //         'content': user.id + ' joined'
-        //     }));
-        // });
+        Group.addUser(user);
+        socketIOServer.emit('server-message', JSON.stringify({
+            'created_time': new Date(),
+            'user_id': user.id,
+            'group_id': user.group_id,
+            'content': user.id + ' joined ' + user.group_id
+        }));
     })
-    connection.on('message', function(group_id, params) {
-        console.log('check', 1);
-        connection.emit('message', group_id, params);
+    connection.on('client-message', function (group_id, params) {
+        socketIOServer.emit('server-message', group_id, params);
     })
 }
