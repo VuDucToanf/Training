@@ -1,5 +1,5 @@
 var socketIO = require("socket.io");
-var Group = require("public/assets/js/nodejs/group");
+var Group = require("./public/assets/js/nodejs/group");
 
 socketIOServer = socketIO.listen(82);
 console.log("Server started.");
@@ -12,8 +12,8 @@ function onClientConnection(connection) {
     });
     connection.on('user-join', async function (user) {
         user = JSON.parse(user);
-        Group.addUser(user);
-        socketIOServer.emit('server-message', JSON.stringify({
+        Group.addUser(user, connection);
+        sendMessageToGroup(user.group_id, JSON.stringify({
             'created_time': new Date(),
             'user_id': user.id,
             'group_id': user.group_id,
@@ -21,6 +21,13 @@ function onClientConnection(connection) {
         }));
     })
     connection.on('client-message', function (group_id, params) {
-        socketIOServer.emit('server-message', group_id, params);
+        sendMessageToGroup(group_id, params);
+    })
+}
+
+function sendMessageToGroup(group_id, data) {
+    var group = Group.getUserByGroup(group_id);
+    group.forEach((conn) => {
+        conn.emit('server-message', data);
     })
 }

@@ -31,7 +31,6 @@ function ChatController($scope) {
     $scope.messages = {};
     $scope.giveMessage = function (params) {
         params = JSON.parse(params);
-        console.log('check', params);
         $scope.$apply(function() {
             if (!$scope.messages[params.group_id]) {
                 $scope.messages[params.group_id] = [];
@@ -41,7 +40,7 @@ function ChatController($scope) {
     }
 
     $scope.sendMessage = function () {
-        connection.emit('client-message', JSON.stringify({
+        connection.emit('client-message', $scope.user.group_id, JSON.stringify({
             'created_time': new Date(),
             'user_id': $scope.user.id,
             'group_id': $scope.user.group_id,
